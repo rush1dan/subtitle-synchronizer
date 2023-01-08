@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.filedialog as tk_filedialog
 from tkinterdnd2 import DND_FILES, TkinterDnD
+import utils
 
 window = TkinterDnD.Tk()
 
@@ -25,6 +26,6 @@ menubar.add_cascade(label="File", menu=filemenu)
 window.config(menu=menubar)
 
 window.drop_target_register(DND_FILES)
-window.dnd_bind('<<Drop>>', lambda e: print(e.data))
+window.dnd_bind('<<Drop>>', lambda e: utils.process_dnd_data(e.data))
 
 window.mainloop()
