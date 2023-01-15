@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.filedialog as tk_filedialog
 from tkinterdnd2 import DND_FILES, TkinterDnD
 import utils
+from pages import Page_Manager, Pages
 
 window = TkinterDnD.Tk()
 
@@ -27,5 +28,6 @@ window.config(menu=menubar)
 
 window.drop_target_register(DND_FILES)
 window.dnd_bind('<<Drop>>', lambda e: utils.process_dnd_data(e.data))
+Page_Manager.setup_pages(window, Pages.START)
 
 window.mainloop()
