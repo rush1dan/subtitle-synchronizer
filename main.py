@@ -1,8 +1,8 @@
 import tkinter as tk
-import tkinter.filedialog as tk_filedialog
 from tkinterdnd2 import DND_FILES, TkinterDnD
 import utils
 from pages import Page_Manager, Pages
+from data import Data
 
 window = TkinterDnD.Tk()
 
@@ -14,6 +14,7 @@ window_width = int(screen_width / 6)
 window_height = int(window_width / window_aspect_ratio)
 window.geometry(f"{window_width}x{window_height}")
 window.resizable(0, 0)
+window.update_idletasks()
 
 #Menubar:
 menubar = tk.Menu(window)
@@ -29,5 +30,7 @@ window.config(menu=menubar)
 window.drop_target_register(DND_FILES)
 window.dnd_bind('<<Drop>>', lambda e: utils.process_dnd_data(e.data))
 Page_Manager.setup_pages(window, Pages.START)
+
+Data.on_data_registered = lambda data: Page_Manager.show_page(Pages.OPERATION)
 
 window.mainloop()
