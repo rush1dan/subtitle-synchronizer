@@ -1,5 +1,11 @@
 import re
 from data import Data
+from enum import IntEnum
+
+class Duration_Unit(IntEnum):
+    ms = 0
+    s = 1
+    m = 2
 
 def process_dnd_data(data: str):
     braced_paths = get_braced_paths(data)

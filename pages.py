@@ -1,6 +1,7 @@
 import tkinter as tk
 from enum import IntEnum
 from data import Data
+from utils import Duration_Unit
 
 class Pages(IntEnum):
     START = 0
@@ -79,16 +80,37 @@ class Operation_Page(Page):
         lbox_files = tk.Listbox(master=frm_lbox_files, width=1, height=1, font=("Arial", 8), justify="left")
         for i, file in enumerate(Data.files):
             lbox_files.insert(i + 1, f"{i + 1}. {file}")
-        lbox_files.pack(side = "left", fill = "both", expand=True)
+        lbox_files.pack(side="left", fill="both", expand=True)
 
         frm_scrollbar = tk.Frame(master=frm_upper, relief=tk.FLAT, borderwidth=0)
         frm_scrollbar.grid(row=0, column=1, sticky=tk.NSEW)
 
         scrollbar = tk.Scrollbar(frm_scrollbar)
-        scrollbar.pack(side = "right", fill = "both")
+        scrollbar.pack(side="right", fill="both")
 
         lbox_files.config(yscrollcommand = scrollbar.set)
-        scrollbar.config(command = lbox_files.yview)
+        scrollbar.config(command=lbox_files.yview)
 
+        frm_lower = tk.Frame(master=self, relief=tk.FLAT, borderwidth=0)
+        frm_lower.grid(row=1, column=0, sticky=tk.NSEW)
+
+        lbl_duration = tk.Label(master=frm_lower, text="Duration", fg="grey", font=("Arial", 12, "bold"))
+        lbl_duration.place(relx=0.05, rely=0.25)
+
+        ent_duration = tk.Entry(master=frm_lower, width=12, font=("Arial", 12), borderwidth=2)
+        ent_duration.place(relx=0.05, rely=0.5)
+
+        lbl_unit = tk.Label(master=frm_lower, text="Unit", fg="grey", font=("Arial", 12, "bold"))
+        lbl_unit.place(relx=0.3, rely=0.25)
+
+        options = ["ms", "s", "m"]
+        selected_option = tk.StringVar()
+        selected_option.set(options[0])
+        unit_dict = {"ms":Duration_Unit.ms, "s":Duration_Unit.s, "m":Duration_Unit.m}
+        selected_unit = Duration_Unit.ms
+        def select_unit(s: str):
+            selected_unit = unit_dict[s]
+        drp_unit = tk.OptionMenu(frm_lower, selected_option, *options, command=lambda x: select_unit(x))
+        drp_unit.place(relx=0.3, rely=0.5)
 
         super().show()
