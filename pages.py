@@ -2,6 +2,7 @@ import tkinter as tk
 from enum import IntEnum
 from data import Data
 from utils import Duration_Unit
+from operation import modify_sub_files
 
 class Pages(IntEnum):
     START = 0
@@ -63,8 +64,8 @@ class Operation_Page(Page):
         super().__init__(master)
 
     def show(self):
-        self.rowconfigure(0, minsize=int(self.window_height * 0.4))
-        self.rowconfigure(1, minsize=int(self.window_height * 0.6))
+        self.rowconfigure(0, minsize=int(self.window_height * 0.5))
+        self.rowconfigure(1, minsize=int(self.window_height * 0.5))
         self.columnconfigure(0, minsize=int(self.window_width))
 
         frm_upper = tk.Frame(master=self, relief=tk.FLAT, borderwidth=0)
@@ -72,12 +73,12 @@ class Operation_Page(Page):
 
         frm_upper.columnconfigure(0, minsize=int(self.window_width * 0.95))
         frm_upper.columnconfigure(1, minsize=int(self.window_width * 0.05))
-        frm_upper.rowconfigure(0, minsize=int(self.window_height * 0.4))
+        frm_upper.rowconfigure(0, minsize=int(self.window_height * 0.5))
 
         frm_lbox_files = tk.Frame(master=frm_upper, relief=tk.FLAT, borderwidth=0)
         frm_lbox_files.grid(row=0, column=0, sticky=tk.NSEW)
 
-        lbox_files = tk.Listbox(master=frm_lbox_files, width=1, height=1, font=("Arial", 8), justify="left")
+        lbox_files = tk.Listbox(master=frm_lbox_files, width=1, height=1, font=("Arial", 10), justify="left")
         for i, file in enumerate(Data.files):
             lbox_files.insert(i + 1, f"{i + 1}. {file}")
         lbox_files.pack(side="left", fill="both", expand=True)
@@ -95,13 +96,13 @@ class Operation_Page(Page):
         frm_lower.grid(row=1, column=0, sticky=tk.NSEW)
 
         lbl_duration = tk.Label(master=frm_lower, text="Duration", fg="grey", font=("Arial", 12, "bold"))
-        lbl_duration.place(relx=0.05, rely=0.25)
+        lbl_duration.place(relx=0.25, rely=0.3, anchor=tk.CENTER)
 
         ent_duration = tk.Entry(master=frm_lower, width=12, font=("Arial", 12), borderwidth=2)
-        ent_duration.place(relx=0.05, rely=0.5)
+        ent_duration.place(relx=0.25, rely=0.6, anchor=tk.CENTER)
 
         lbl_unit = tk.Label(master=frm_lower, text="Unit", fg="grey", font=("Arial", 12, "bold"))
-        lbl_unit.place(relx=0.3, rely=0.25)
+        lbl_unit.place(relx=0.6, rely=0.3, anchor=tk.CENTER)
 
         options = ["ms", "s", "m"]
         selected_option = tk.StringVar()
@@ -111,6 +112,10 @@ class Operation_Page(Page):
         def select_unit(s: str):
             selected_unit = unit_dict[s]
         drp_unit = tk.OptionMenu(frm_lower, selected_option, *options, command=lambda x: select_unit(x))
-        drp_unit.place(relx=0.3, rely=0.5)
+        drp_unit.place(relx=0.6, rely=0.6, anchor=tk.CENTER)
+
+        btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
+            command=modify_sub_files(Data.files))
+        btn_ok.place(relx=0.85, rely=0.6, anchor=tk.CENTER)
 
         super().show()
