@@ -98,8 +98,14 @@ class Operation_Page(Page):
         lbl_duration = tk.Label(master=frm_lower, text="Duration", fg="grey", font=("Arial", 12, "bold"))
         lbl_duration.place(relx=0.25, rely=0.3, anchor=tk.CENTER)
 
-        ent_duration = tk.Entry(master=frm_lower, width=12, font=("Arial", 12), borderwidth=2)
+        entered_text = tk.StringVar()
+        ent_duration = tk.Entry(master=frm_lower, width=12, font=("Arial", 12), borderwidth=2, textvariable=entered_text)
         ent_duration.place(relx=0.25, rely=0.6, anchor=tk.CENTER)
+        def validate_entry(*args):
+            val = entered_text.get()
+            if not val.isdigit():
+                ent_duration.delete(ent_duration.index(tk.INSERT) - 1, tk.END)
+        entered_text.trace("w", validate_entry)
 
         lbl_unit = tk.Label(master=frm_lower, text="Unit", fg="grey", font=("Arial", 12, "bold"))
         lbl_unit.place(relx=0.6, rely=0.3, anchor=tk.CENTER)
@@ -115,7 +121,7 @@ class Operation_Page(Page):
         drp_unit.place(relx=0.6, rely=0.6, anchor=tk.CENTER)
 
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
-            command=modify_sub_files(Data.files))
+            command=lambda: modify_sub_files(Data.files))
         btn_ok.place(relx=0.85, rely=0.6, anchor=tk.CENTER)
 
         super().show()
