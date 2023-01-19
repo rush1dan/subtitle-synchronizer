@@ -120,8 +120,13 @@ class Operation_Page(Page):
         drp_unit = tk.OptionMenu(frm_lower, selected_option, *options, command=lambda x: select_unit(x))
         drp_unit.place(relx=0.6, rely=0.6, anchor=tk.CENTER)
 
+        def commence_operation():
+            self.main_window.config(menu="")
+            self.main_window.drop_target_unregister()
+            modify_sub_files(Data.files)
+
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
-            command=lambda: modify_sub_files(Data.files))
+            command=commence_operation)
         btn_ok.place(relx=0.85, rely=0.6, anchor=tk.CENTER)
 
         super().show()
