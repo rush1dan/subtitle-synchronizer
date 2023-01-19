@@ -128,6 +128,7 @@ class Operation_Page(Page):
             self.main_window.config(menu="")
             self.main_window.drop_target_unregister()
             Page_Manager.show_page(Pages.PROGRESS)
+            self.main_window.update_idletasks()
             modify_sub_files(Data.files)
 
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
