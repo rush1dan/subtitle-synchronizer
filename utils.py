@@ -45,3 +45,9 @@ def get_file_extension(filename_or_path: str):
         if ch == ".":
             break
     return extension_rev[::-1]
+
+def center_window(width: int, height: int, screen_width: int, screen_height: int) -> str:
+    # calculate position x and y coordinates
+    x = int((screen_width/2)) - int((width/2))
+    y = int((screen_height/2)) - int((height/2))
+    return f'{width}x{height}+{x}+{y}'

@@ -12,7 +12,7 @@ screen_height = window.winfo_screenheight()
 window_aspect_ratio = 1.5
 window_width = int(screen_width / 6)
 window_height = int(window_width / window_aspect_ratio)
-window.geometry(f"{window_width}x{window_height}")
+window.geometry(utils.center_window(window_width, window_height, screen_width, screen_height))
 window.resizable(0, 0)
 window.update_idletasks()
 

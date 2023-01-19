@@ -1,12 +1,14 @@
 import tkinter as tk
 from enum import IntEnum
 from data import Data
-from utils import Duration_Unit
+from utils import Duration_Unit, center_window
 from operation import modify_sub_files
 
 class Pages(IntEnum):
     START = 0
     OPERATION = 1
+    PROGRESS = 2
+    COMPLETE = 3
 
 
 class Page(tk.Frame):
@@ -32,6 +34,8 @@ class Page_Manager:
     def setup_pages(cls, main_window: tk.Tk, start_page: Pages):
         cls.page_collection[Pages.START] = Start_Page(main_window)
         cls.page_collection[Pages.OPERATION] = Operation_Page(main_window)
+        cls.page_collection[Pages.PROGRESS] = Progress_Page(main_window)
+        cls.page_collection[Pages.COMPLETE] = Complete_Page(main_window)
 
         cls.show_page(start_page)
 
@@ -123,10 +127,45 @@ class Operation_Page(Page):
         def commence_operation():
             self.main_window.config(menu="")
             self.main_window.drop_target_unregister()
+            Page_Manager.show_page(Pages.PROGRESS)
             modify_sub_files(Data.files)
 
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
             command=commence_operation)
         btn_ok.place(relx=0.85, rely=0.6, anchor=tk.CENTER)
+
+        super().show()
+
+
+class Progress_Page(Page):
+    def __init__(self, master):
+        super().__init__(master)
+
+    def show(self):
+        window_width = self.window_width
+        window_height = int(self.window_height * 0.5)
+
+        self.main_window.geometry(center_window(window_width, window_height, self.winfo_screenwidth(), self.winfo_screenheight()))
+
+        lbl_processing = tk.Label(master=self, text="Processing...", font=("Arial", 15, "bold"), anchor=tk.CENTER)
+        lbl_processing.pack(side="top", fill="both", expand="true")
+
+
+        super().show()
+
+
+class Complete_Page(Page):
+    def __init__(self, master):
+        super().__init__(master)
+
+    def show(self):
+        window_width = self.window_width
+        window_height = int(self.window_height * 0.5)
+
+        self.main_window.geometry(center_window(window_width, window_height, self.winfo_screenwidth(), self.winfo_screenheight()))
+
+        lbl_processing = tk.Label(master=self, text="Completed", font=("Arial", 15, "bold"), anchor=tk.CENTER)
+        lbl_processing.pack(side="top", fill="both", expand="true")
+
 
         super().show()
