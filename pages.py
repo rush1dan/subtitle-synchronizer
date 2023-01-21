@@ -107,7 +107,7 @@ class Operation_Page(Page):
         ent_duration.place(relx=0.25, rely=0.6, anchor=tk.CENTER)
         def validate_entry(*args):
             val = entered_text.get()
-            if not val.isdigit():
+            if not (len(val) > 0 and val[-1].isdigit() or (len(val) == 1 and val[-1] == "-")):
                 ent_duration.delete(ent_duration.index(tk.INSERT) - 1, tk.END)
         entered_text.trace("w", validate_entry)
 
@@ -129,7 +129,7 @@ class Operation_Page(Page):
             self.main_window.drop_target_unregister()
             Page_Manager.show_page(Pages.PROGRESS)
             self.main_window.update_idletasks()
-            modify_sub_files(Data.files)
+            modify_sub_files(Data.files, int(ent_duration.get()), selected_unit)
 
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
             command=commence_operation)
