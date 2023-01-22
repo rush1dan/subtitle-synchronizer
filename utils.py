@@ -1,6 +1,7 @@
 import re
 from data import Data
 from enum import IntEnum
+import os
 
 class Duration_Unit(IntEnum):
     ms = 0
@@ -46,6 +47,13 @@ def get_file_extension(filename_or_path: str):
         if ch == ".":
             break
     return extension_rev[::-1]
+
+def add_nonduplicate_identifier(filename_or_path: str, nonduplicate_identifier: str)->str:
+    file_extension = get_file_extension(filename_or_path)
+    modified_filename_or_path = filename_or_path.replace(file_extension, f"{nonduplicate_identifier}{file_extension}")
+    if os.path.exists(modified_filename_or_path):
+        modified_filename_or_path = add_nonduplicate_identifier(modified_filename_or_path, nonduplicate_identifier)
+    return modified_filename_or_path
 
 def center_window(width: int, height: int, screen_width: int, screen_height: int) -> str:
     # calculate position x and y coordinates

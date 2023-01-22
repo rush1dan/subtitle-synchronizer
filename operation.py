@@ -1,22 +1,31 @@
-from utils import Duration_Unit
+from utils import Duration_Unit, add_nonduplicate_identifier
 
 def modify_sub_files(files: list[str], duration: int, time_unit: Duration_Unit):
-    id_string = "-->"
+    symbol = "-->"
     for file_path in files:
-        lines = []
-        with open(file_path) as file:
-            lines = file.readlines()
-            for line in lines:
-                if id_string in line:
-                    modify_line(line, id_string, duration, time_unit)
+        file_r = open(file_path, "r")
+        lines = file_r.readlines()
+        line_count = len(lines)
+        for i in range(0, line_count):
+            if symbol in lines[i]:
+                modify_line(i, lines, symbol, duration, time_unit)
 
+        file_w = open(add_nonduplicate_identifier(file_path, "_Edited"), "w")
+        file_w.writelines(lines)
+        
+        file_r.close()
+        file_w.close()
 
-def modify_line(line: str, id_string: str, duration: int, time_unit: Duration_Unit):
-    timestamps = line.split(id_string)
+def modify_line(line_index: int, lines: list[str], symbol: str, duration: int, time_unit: Duration_Unit):
+    line = lines[line_index]
+    timestamps = line.split(symbol)
     timestamps = [timestamp.strip(r" \n") for timestamp in timestamps]
 
+    modified_timestamps = []
     for timestamp in timestamps:
-        print(change_timestamp(timestamp, duration, time_unit))
+        modified_timestamps.append(change_timestamp(timestamp, duration, time_unit))
+
+    lines[line_index] = f"{modified_timestamps[0]} {symbol} {modified_timestamps[1]}\n"
 
 
 def change_timestamp(timestamp: str, duration: int, time_unit: Duration_Unit) -> str:
