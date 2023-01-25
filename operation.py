@@ -1,6 +1,6 @@
-from utils import Duration_Unit, add_nonduplicate_identifier
+from utils import Duration_Unit, add_nonduplicate_identifier, get_file_name
 
-def modify_sub_files(files: list[str], duration: int, time_unit: Duration_Unit):
+def modify_sub_files(files: list[str], duration: int, time_unit: Duration_Unit, save_directory: str):
     symbol = "-->"
     for file_path in files:
         file_r = open(file_path, "r")
@@ -10,10 +10,14 @@ def modify_sub_files(files: list[str], duration: int, time_unit: Duration_Unit):
             if symbol in lines[i]:
                 modify_line(i, lines, symbol, duration, time_unit)
 
-        file_w = open(add_nonduplicate_identifier(file_path, "_Edited"), "w")
+        save_path = save_directory + "\\" + get_file_name(file_path)
+        save_path = add_nonduplicate_identifier(save_path, "_Edited")
+
+        file_w = open(save_path, "w")
         file_w.writelines(lines)
         
         file_r.close()
+        file_w.flush()
         file_w.close()
 
 def modify_line(line_index: int, lines: list[str], symbol: str, duration: int, time_unit: Duration_Unit):

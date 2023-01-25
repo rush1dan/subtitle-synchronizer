@@ -2,6 +2,7 @@ import re
 from data import Data
 from enum import IntEnum
 import os
+from tkinter import messagebox
 
 class Duration_Unit(IntEnum):
     ms = 0
@@ -29,7 +30,10 @@ def process_dnd_data(data: str):
         if file_ext == ".srt" or file_ext == ".txt":
             operable_files.append(file)
 
-    Data.set_data(operable_files)
+    if len(operable_files) > 0:
+        Data.set_data(operable_files)
+    else:
+        messagebox.showinfo(title="File Selection", message="Only .txt or .srt files allowed")
 
 def get_braced_paths(data: str) -> list[str]:
     paths_surrounded_by_braces = re.findall(r'\{.*?\}', data)
@@ -39,6 +43,17 @@ def remove_braces_from_paths(braced_paths: list[str]) -> list[str]:
     braceless_paths = [path.strip(r"{}") for path in braced_paths]
     return braceless_paths
 
+def get_file_name(filepath: str, with_extension: bool = True):
+    filename_rev = ""
+    for i in range(len(filepath) - 1, -1, -1):
+        ch = filepath[i]
+        if ch == "/" or ch == "\\":
+            break
+        filename_rev += ch
+
+        filename = filename_rev[::-1]
+    return filename if with_extension else filename.replace(get_file_extension(filename), "")
+
 def get_file_extension(filename_or_path: str):
     extension_rev = ""
     for i in range(len(filename_or_path) - 1, -1, -1):
@@ -47,6 +62,9 @@ def get_file_extension(filename_or_path: str):
         if ch == ".":
             break
     return extension_rev[::-1]
+
+def get_parent_directory(file_or_folder_path: str) -> str:
+    return os.path.dirname(os.path.realpath(file_or_folder_path))
 
 def add_nonduplicate_identifier(filename_or_path: str, nonduplicate_identifier: str)->str:
     file_extension = get_file_extension(filename_or_path)

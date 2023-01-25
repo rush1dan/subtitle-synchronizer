@@ -1,8 +1,10 @@
 import tkinter as tk
+from tkinter import filedialog
 from enum import IntEnum
 from data import Data
-from utils import Duration_Unit, center_window
+from utils import Duration_Unit, center_window, get_parent_directory
 from operation import modify_sub_files
+from tkinter import messagebox
 
 class Pages(IntEnum):
     START = 0
@@ -118,18 +120,25 @@ class Operation_Page(Page):
         selected_option = tk.StringVar()
         selected_option.set(options[0])
         unit_dict = {"ms":Duration_Unit.ms, "s":Duration_Unit.s, "m":Duration_Unit.m}
-        selected_unit = Duration_Unit.ms
+        self.selected_unit = Duration_Unit.ms
         def select_unit(s: str):
-            selected_unit = unit_dict[s]
+            self.selected_unit = unit_dict[s]
         drp_unit = tk.OptionMenu(frm_lower, selected_option, *options, command=lambda x: select_unit(x))
         drp_unit.place(relx=0.6, rely=0.6, anchor=tk.CENTER)
 
         def commence_operation():
-            self.main_window.config(menu="")
-            self.main_window.drop_target_unregister()
-            Page_Manager.show_page(Pages.PROGRESS)
-            self.main_window.update_idletasks()
-            modify_sub_files(Data.files, int(ent_duration.get()), selected_unit)
+            if len(ent_duration.get()) == 0:
+                messagebox.showwarning(title="Duration Entry", message="Please enter modification duration.")
+            else:
+                suggested_directory = get_parent_directory(Data.files[0])
+                saving_directory = save_filesorfolders_at(suggested_directory)
+                
+                if saving_directory:
+                    self.main_window.config(menu="")
+                    self.main_window.drop_target_unregister()
+                    Page_Manager.show_page(Pages.PROGRESS)
+                    self.main_window.update_idletasks()
+                    modify_sub_files(Data.files, int(ent_duration.get()), self.selected_unit, saving_directory)
 
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
             command=commence_operation)
@@ -170,3 +179,7 @@ class Complete_Page(Page):
 
 
         super().show()
+
+
+def save_filesorfolders_at(suggested_dir: str)->str:
+    return filedialog.askdirectory(initialdir=suggested_dir, mustexist=True)
