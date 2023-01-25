@@ -17,7 +17,6 @@ def modify_sub_files(files: list[str], duration: int, time_unit: Duration_Unit, 
         file_w.writelines(lines)
         
         file_r.close()
-        file_w.flush()
         file_w.close()
 
 def modify_line(line_index: int, lines: list[str], symbol: str, duration: int, time_unit: Duration_Unit):
