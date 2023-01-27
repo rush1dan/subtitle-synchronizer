@@ -116,10 +116,10 @@ class Operation_Page(Page):
         lbl_unit = tk.Label(master=frm_lower, text="Unit", fg="grey", font=("Arial", 12, "bold"))
         lbl_unit.place(relx=0.6, rely=0.3, anchor=tk.CENTER)
 
-        options = ["ms", "s", "m"]
+        options = ["ms", "s", "m", "h"]
         selected_option = tk.StringVar()
         selected_option.set(options[0])
-        unit_dict = {"ms":Duration_Unit.ms, "s":Duration_Unit.s, "m":Duration_Unit.m}
+        unit_dict = {"ms":Duration_Unit.ms, "s":Duration_Unit.s, "m":Duration_Unit.m, "h":Duration_Unit.h}
         self.selected_unit = Duration_Unit.ms
         def select_unit(s: str):
             self.selected_unit = unit_dict[s]
@@ -139,6 +139,8 @@ class Operation_Page(Page):
                     Page_Manager.show_page(Pages.PROGRESS)
                     self.main_window.update_idletasks()
                     modify_sub_files(Data.files, int(ent_duration.get()), self.selected_unit, saving_directory)
+
+                    Page_Manager.show_page(Pages.COMPLETE)
 
         btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
             command=commence_operation)
