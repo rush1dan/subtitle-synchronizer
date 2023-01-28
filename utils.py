@@ -2,13 +2,23 @@ import re
 from data import Data
 from enum import IntEnum
 import os
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 
 class Duration_Unit(IntEnum):
     ms = 0
     s = 1
     m = 2
     h = 3
+
+def open_files():
+    opened_files = filedialog.askopenfilenames(title="Select files (.srt or .txt)")
+    for file in opened_files:
+        file_ext = get_file_extension(file)
+        if not (file_ext == ".srt" or file_ext == ".txt"):
+            messagebox.showinfo(title="File Selection", message="Only .txt or .srt files allowed")
+            return
+    if len(opened_files) > 0:
+        Data.set_data(opened_files)
 
 def process_dnd_data(data: str):
     braced_paths = get_braced_paths(data)
