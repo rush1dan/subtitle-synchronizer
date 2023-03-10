@@ -41,3 +41,5 @@ Page_Manager.setup_pages(window, Pages.START)
 Data.on_data_registered = lambda data: Page_Manager.show_page(Pages.OPERATION)
 
 window.mainloop()
+
+# pyinstaller --onefile -w --paths "C:\PythonProjects\SubtitleSynchronizer\.venv\Lib\site-packages" main.py -i "C:\PythonProjects\SubtitleSynchronizer\SubSyncIcon.ico"
