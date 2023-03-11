@@ -59,7 +59,7 @@ class Start_Page(Page):
         super().__init__(master)
 
     def show(self):
-        lbl_tutorial = tk.Label(master=self, text="Open or Drag and Drop File(s)", fg="grey", font=("Arial", 15, "bold"))
+        lbl_tutorial = tk.Label(master=self, text="Open or Drag and Drop File(s)", fg="grey", font=("Arial", int(15 * Data.SCREEN_RES_FACTOR), "bold"))
         lbl_tutorial.place(relx=0.5, rely=0.4, anchor="center")
 
         super().show()
@@ -84,7 +84,7 @@ class Operation_Page(Page):
         frm_lbox_files = tk.Frame(master=frm_upper, relief=tk.FLAT, borderwidth=0)
         frm_lbox_files.grid(row=0, column=0, sticky=tk.NSEW)
 
-        lbox_files = tk.Listbox(master=frm_lbox_files, width=1, height=1, font=("Arial", 10), justify="left")
+        lbox_files = tk.Listbox(master=frm_lbox_files, width=1, height=1, font=("Arial", int(10 * Data.SCREEN_RES_FACTOR)), justify="left")
         for i, file in enumerate(Data.files):
             lbox_files.insert(i + 1, f"{i + 1}. {file}")
         lbox_files.pack(side="left", fill="both", expand=True)
@@ -101,11 +101,11 @@ class Operation_Page(Page):
         frm_lower = tk.Frame(master=self, relief=tk.FLAT, borderwidth=0)
         frm_lower.grid(row=1, column=0, sticky=tk.NSEW)
 
-        lbl_duration = tk.Label(master=frm_lower, text="Duration", fg="grey", font=("Arial", 12, "bold"))
+        lbl_duration = tk.Label(master=frm_lower, text="Duration", fg="grey", font=("Arial", int(12 * Data.SCREEN_RES_FACTOR), "bold"))
         lbl_duration.place(relx=0.25, rely=0.3, anchor=tk.CENTER)
 
         entered_text = tk.StringVar()
-        ent_duration = tk.Entry(master=frm_lower, width=12, font=("Arial", 12), borderwidth=2, textvariable=entered_text)
+        ent_duration = tk.Entry(master=frm_lower, width=int(12 * Data.SCREEN_RES_FACTOR), font=("Arial", int(12 * Data.SCREEN_RES_FACTOR)), borderwidth=2, textvariable=entered_text)
         ent_duration.place(relx=0.25, rely=0.6, anchor=tk.CENTER)
         def validate_entry(*args):
             val = entered_text.get()
@@ -113,7 +113,7 @@ class Operation_Page(Page):
                 ent_duration.delete(ent_duration.index(tk.INSERT) - 1, tk.END)
         entered_text.trace("w", validate_entry)
 
-        lbl_unit = tk.Label(master=frm_lower, text="Unit", fg="grey", font=("Arial", 12, "bold"))
+        lbl_unit = tk.Label(master=frm_lower, text="Unit", fg="grey", font=("Arial", int(12 * Data.SCREEN_RES_FACTOR), "bold"))
         lbl_unit.place(relx=0.6, rely=0.3, anchor=tk.CENTER)
 
         options = ["ms", "s", "m", "h"]
@@ -142,7 +142,7 @@ class Operation_Page(Page):
 
                     Page_Manager.show_page(Pages.COMPLETE)
 
-        btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", 12, "bold"), relief=tk.RAISED, borderwidth=4, 
+        btn_ok = tk.Button(master=frm_lower, text="OK", font=("Arial", int(12 * Data.SCREEN_RES_FACTOR), "bold"), relief=tk.RAISED, borderwidth=4, 
             command=commence_operation)
         btn_ok.place(relx=0.85, rely=0.6, anchor=tk.CENTER)
 
@@ -159,7 +159,7 @@ class Progress_Page(Page):
 
         self.main_window.geometry(center_window(window_width, window_height, self.winfo_screenwidth(), self.winfo_screenheight()))
 
-        lbl_processing = tk.Label(master=self, text="Processing...", font=("Arial", 15, "bold"), anchor=tk.CENTER)
+        lbl_processing = tk.Label(master=self, text="Processing...", font=("Arial", int(15 * Data.SCREEN_RES_FACTOR), "bold"), anchor=tk.CENTER)
         lbl_processing.pack(side="top", fill="both", expand="true")
 
 
@@ -176,7 +176,7 @@ class Complete_Page(Page):
 
         self.main_window.geometry(center_window(window_width, window_height, self.winfo_screenwidth(), self.winfo_screenheight()))
 
-        lbl_processing = tk.Label(master=self, text="Completed", font=("Arial", 15, "bold"), anchor=tk.CENTER)
+        lbl_processing = tk.Label(master=self, text="Completed", font=("Arial", int(15 * Data.SCREEN_RES_FACTOR), "bold"), anchor=tk.CENTER)
         lbl_processing.pack(side="top", fill="both", expand="true")
 
 

@@ -9,6 +9,7 @@ window = TkinterDnD.Tk()
 
 #Main Window:
 screen_width = window.winfo_screenwidth()
+Data.SCREEN_RES_FACTOR = screen_width / 1920
 screen_height = window.winfo_screenheight()
 window_aspect_ratio = 1.5
 window_width = int(screen_width / 6)
